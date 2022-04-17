@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
-import { addNewTask } from "../../redux/reducer";
+import { addNewTask, renameList } from "../../redux/reducer";
 import { useForm, useFieldArray } from "react-hook-form";
+import Editable from "./Editable";
 
 const ListCard = styled.div`
   font-size: 1.5em;
@@ -42,10 +43,28 @@ export function SingleList() {
     dispatch(addNewTask({ listName, taskName }));
     reset();
   };
+  const updateListName = ({ oldName, newName }) => {
+    dispatch(renameList({ oldName, newName }));
+  };
 
   return Object.keys(lists).map((list, listIndex) => (
     <ListCard key={listIndex}>
-      <ListTitle>{list}</ListTitle>
+      <ListTitle>
+        <Editable text={list} placeholder="Write a task name" type="input">
+          <input
+            type="text"
+            name="task"
+            placeholder="Write a task name"
+            value={list}
+            onChange={(e) =>
+              updateListName({
+                oldName: list,
+                newName: e.target.value,
+              })
+            }
+          />
+        </Editable>
+      </ListTitle>
       {lists[list].map((task, taskIndex) => (
         <TaskTitle key={taskIndex}>{task.name}</TaskTitle>
       ))}
