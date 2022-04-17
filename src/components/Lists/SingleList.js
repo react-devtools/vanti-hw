@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
-import { addNewTask, removeList, renameList, renameTaskDescription, renameTaskName } from "../../redux/reducer";
+import { addNewTask, removeList, renameList, renameTaskDescription, renameTaskName, removeTask } from "../../redux/reducer";
 import { useForm, useFieldArray } from "react-hook-form";
 import Editable from "./Editable";
 
@@ -58,6 +58,11 @@ export function SingleList() {
       dispatch(removeList(listName));
     };
   };
+  const deleteTask = (listName, taskIndex) => {
+    return () => {
+      dispatch(removeTask({ listName, taskIndex }));
+    };
+  };
 
   return Object.keys(lists).map((list, listIndex) => (
     <ListCard key={listIndex}>
@@ -104,6 +109,7 @@ export function SingleList() {
               }
             />
           </Editable>
+          <button onClick={deleteTask(list, taskIndex)}>Delete</button>
         </TaskTitle>
       ))}
       <form key={listIndex} onSubmit={handleSubmit((data) => onTaskSubmit({ task: data, listName: list }))}>

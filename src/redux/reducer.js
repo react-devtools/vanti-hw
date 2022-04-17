@@ -70,9 +70,21 @@ export const listsSlice = createSlice({
         value: addTask(listName, current(state).value, taskName),
       };
     },
+    removeTask: (state, { payload }) => {
+      console.log(payload);
+      const taskIndex = payload.taskIndex;
+      const listName = payload.listName;
+      return {
+        ...state,
+        value: {
+          ...state.value,
+          [listName]: state.value[listName].filter((task, index) => taskIndex !== index),
+        },
+      };
+    },
   },
 });
 
-export const { addNewList, renameList, addNewTask, renameTaskName, renameTaskDescription, removeList } = listsSlice.actions;
+export const { addNewList, renameList, addNewTask, renameTaskName, renameTaskDescription, removeList, removeTask } = listsSlice.actions;
 
 export default listsSlice.reducer;
