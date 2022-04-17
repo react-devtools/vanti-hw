@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
-import { addNewTask, renameList, renameTask } from "../../redux/reducer";
+import { addNewTask, renameList, renameTaskDescription, renameTaskName } from "../../redux/reducer";
 import { useForm, useFieldArray } from "react-hook-form";
 import Editable from "./Editable";
 
@@ -47,7 +47,10 @@ export function SingleList() {
     dispatch(renameList({ oldName, newName }));
   };
   const updateTaskName = ({ listName, taskIndex, newName }) => {
-    dispatch(renameTask({ listName, taskIndex, newName }));
+    dispatch(renameTaskName({ listName, taskIndex, newName }));
+  };
+  const updateTaskDescription = ({ listName, taskIndex, newDescription }) => {
+    dispatch(renameTaskDescription({ listName, taskIndex, newDescription }));
   };
 
   return Object.keys(lists).map((list, listIndex) => (
@@ -77,6 +80,19 @@ export function SingleList() {
                   listName: list,
                   taskIndex: taskIndex,
                   newName: e.target.value,
+                })
+              }
+            />
+          </Editable>
+          <Editable text={task.description} type="input">
+            <input
+              type="text"
+              value={task.description}
+              onChange={(e) =>
+                updateTaskDescription({
+                  listName: list,
+                  taskIndex: taskIndex,
+                  newDescription: e.target.value,
                 })
               }
             />

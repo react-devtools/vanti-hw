@@ -1,7 +1,7 @@
 export const createTask = (taskName) => {
   return {
     name: taskName,
-    description: "",
+    description: "Description",
   };
 };
 export const removeProp = (key, obj) => {
