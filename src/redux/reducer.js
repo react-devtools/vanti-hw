@@ -24,6 +24,25 @@ export const listsSlice = createSlice({
         value: renameListObj(current(state).value, oldName, newName),
       };
     },
+    renameTask: (state, { payload }) => {
+      const listName = payload.listName;
+      const taskIndex = payload.taskIndex;
+      const newName = payload.newName;
+      return {
+        ...state,
+        value: {
+          ...state.value,
+          [listName]: state.value[listName].map((task, index) =>
+            taskIndex === index
+              ? {
+                  ...task,
+                  name: newName,
+                }
+              : task
+          ),
+        },
+      };
+    },
     addNewTask: (state, { payload }) => {
       const taskName = payload.taskName;
       const listName = payload.listName;
@@ -35,6 +54,6 @@ export const listsSlice = createSlice({
   },
 });
 
-export const { addNewList, renameList, addNewTask } = listsSlice.actions;
+export const { addNewList, renameList, addNewTask, renameTask } = listsSlice.actions;
 
 export default listsSlice.reducer;

@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
-import { addNewTask, renameList } from "../../redux/reducer";
+import { addNewTask, renameList, renameTask } from "../../redux/reducer";
 import { useForm, useFieldArray } from "react-hook-form";
 import Editable from "./Editable";
 
@@ -46,15 +46,16 @@ export function SingleList() {
   const updateListName = ({ oldName, newName }) => {
     dispatch(renameList({ oldName, newName }));
   };
+  const updateTaskName = ({ listName, taskIndex, newName }) => {
+    dispatch(renameTask({ listName, taskIndex, newName }));
+  };
 
   return Object.keys(lists).map((list, listIndex) => (
     <ListCard key={listIndex}>
       <ListTitle>
-        <Editable text={list} placeholder="Write a task name" type="input">
+        <Editable text={list} type="input">
           <input
             type="text"
-            name="task"
-            placeholder="Write a task name"
             value={list}
             onChange={(e) =>
               updateListName({
@@ -66,7 +67,21 @@ export function SingleList() {
         </Editable>
       </ListTitle>
       {lists[list].map((task, taskIndex) => (
-        <TaskTitle key={taskIndex}>{task.name}</TaskTitle>
+        <TaskTitle key={taskIndex}>
+          <Editable text={task.name} type="input">
+            <input
+              type="text"
+              value={task.name}
+              onChange={(e) =>
+                updateTaskName({
+                  listName: list,
+                  taskIndex: taskIndex,
+                  newName: e.target.value,
+                })
+              }
+            />
+          </Editable>
+        </TaskTitle>
       ))}
       <form key={listIndex} onSubmit={handleSubmit((data) => onTaskSubmit({ task: data, listName: list }))}>
         {fields.map((curField, fieldsIndex) => {
