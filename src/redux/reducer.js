@@ -8,7 +8,7 @@ export const listsSlice = createSlice({
   },
   reducers: {
     addNewList: (state, { payload }) => {
-      state.value[payload] = [createTask("default")];
+      state.value[payload] = [];
     },
     removeList: (state, { payload }) => {
       return {
@@ -65,13 +65,13 @@ export const listsSlice = createSlice({
     addNewTask: (state, { payload }) => {
       const taskName = payload.taskName;
       const listName = payload.listName;
+      const taskDescription = payload.taskDescription;
       return {
         ...state,
-        value: addTask(listName, current(state).value, taskName),
+        value: addTask(listName, current(state).value, taskName, taskDescription),
       };
     },
     removeTask: (state, { payload }) => {
-      console.log(payload);
       const taskIndex = payload.taskIndex;
       const listName = payload.listName;
       return {

@@ -30,7 +30,7 @@ export function SingleList() {
     reset,
   } = useForm({
     defaultValues: {
-      task: [{ taskName: "" }],
+      task: [{ taskName: "", description: "" }],
     },
   });
   const { fields } = useFieldArray({
@@ -40,7 +40,8 @@ export function SingleList() {
 
   const onTaskSubmit = ({ task, listName }) => {
     const taskName = task.task[0].taskName;
-    dispatch(addNewTask({ listName, taskName }));
+    const taskDescription = task.task[0].taskDescription;
+    dispatch(addNewTask({ listName, taskName, taskDescription }));
     reset();
   };
   const updateListName = ({ oldName, newName }) => {
@@ -116,7 +117,19 @@ export function SingleList() {
         {fields.map((curField, fieldsIndex) => {
           return (
             <li key={curField.id}>
-              <input key={`task.${fieldsIndex}.taskName`} name={`task.${fieldsIndex}.taskName`} {...register(`task.${fieldsIndex}.taskName`)} required />
+              <input
+                key={`task.${fieldsIndex}.taskName`}
+                name={`task.${fieldsIndex}.taskName`}
+                {...register(`task.${fieldsIndex}.taskName`)}
+                placeholder="Enter task name"
+                required
+              />
+              <input
+                key={`task.${fieldsIndex}.taskDescription`}
+                name={`task.${fieldsIndex}.taskDescription`}
+                {...register(`task.${fieldsIndex}.taskDescription`)}
+                placeholder="Enter task description"
+              />
             </li>
           );
         })}

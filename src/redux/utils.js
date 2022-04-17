@@ -1,7 +1,7 @@
-export const createTask = (taskName) => {
+export const createTask = (taskName, taskDescription) => {
   return {
     name: taskName,
-    description: "Description",
+    description: taskDescription,
   };
 };
 export const removeProp = (key, state) => {
@@ -9,10 +9,10 @@ export const removeProp = (key, state) => {
   delete copy[key];
   return copy;
 };
-export const addTask = (key, state, task) => {
+export const addTask = (key, state, task, taskDescription) => {
   let copy = Object.assign({}, state);
   let List = copy[key];
-  List = [...List, createTask(task)];
+  List = [...List, createTask(task, taskDescription)];
   copy[key] = List;
   return copy;
 };
