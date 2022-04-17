@@ -1,0 +1,18 @@
+{
+  "printWidth": 160,
+  "semi": false,
+  "overrides": [
+    {
+      "files": "*.test.js",
+      "options": {
+        "semi": false
+      }
+    },
+    {
+      "files": ["*.html", "legacy/**/*.js"],
+      "options": {
+        "tabWidth": 4
+      }
+    }
+  ]
+}
