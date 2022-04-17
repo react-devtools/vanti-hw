@@ -73,6 +73,6 @@ export const listsSlice = createSlice({
   },
 });
 
-export const { addNewList, renameList, addNewTask, renameTaskName, renameTaskDescription } = listsSlice.actions;
+export const { addNewList, renameList, addNewTask, renameTaskName, renameTaskDescription, removeList } = listsSlice.actions;
 
 export default listsSlice.reducer;
