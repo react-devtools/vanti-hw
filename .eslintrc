@@ -23,6 +23,8 @@
   ],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "semi": [ "error", "never" ]
+    "semi": [2, "always"],
+    "no-unused-vars": "off",
+    "quotes": [2, "double", { "avoidEscape": true }]
   }
 }

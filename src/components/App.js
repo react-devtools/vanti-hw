@@ -1,12 +1,14 @@
-import "./App.css"
-import { Lists } from "./Lists/Lists"
+import "./App.css";
+import { SingleList } from "./Lists/SingleList";
+import Form from "./Form/Form";
 
 function App() {
   return (
     <div className="App">
-      <Lists />
+      <Form />
+      <SingleList />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

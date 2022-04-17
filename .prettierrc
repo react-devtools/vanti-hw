@@ -1,13 +1,7 @@
 {
   "printWidth": 160,
-  "semi": false,
+  "singleQuote": false,
   "overrides": [
-    {
-      "files": "*.test.js",
-      "options": {
-        "semi": false
-      }
-    },
     {
       "files": ["*.html", "legacy/**/*.js"],
       "options": {
