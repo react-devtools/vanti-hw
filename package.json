@@ -16,7 +16,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint src",
+    "lint": "esw src --watch",
     "lint-fix": "eslint src --fix --ext .js,.jsx ."
   },
   "eslintConfig": {
@@ -40,9 +40,10 @@
   "devDependencies": {
     "babel-eslint": "10.1.0",
     "eslint": "8.13.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-react": "7.29.4",
-    "prettier": "^2.6.2"
+    "eslint-watch": "8.0.0",
+    "redux-devtools-extension": "2.13.9"
   }
 }
