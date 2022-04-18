@@ -1,26 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import styled from "styled-components";
+import { Input, Button, Grid, Paper } from "@material-ui/core";
 
-import { addNewTask, removeList, renameList, renameTaskDescription, renameTaskName, removeTask } from "../../redux/reducer";
+import { addNewTask, removeList, renameList } from "../../redux/reducer";
 import { useForm, useFieldArray } from "react-hook-form";
-import Editable from "./common/Editable";
 import { Task } from "./Task/Task";
 import { listsSelector } from "../../redux/selectors";
-
-const ListCard = styled.div`
-  font-size: 1.5em;
-  text-align: center;
-  color: palevioletred;
-`;
-const ListTitle = styled.h1`
-  font-size: 2em;
-`;
+import IconButton from "@material-ui/core/IconButton";
+import { Build, Delete, Save } from "@material-ui/icons";
+import { styles } from "../resources/styles";
 
 export function SingleList() {
   const dispatch = useDispatch();
   const lists = useSelector((state) => state.value);
   const shouldDisplayMoveButton = useSelector(listsSelector);
+  const [name, setName] = useState("");
+  const [editMode, setEditMode] = useState({});
 
   const {
     register,
@@ -42,8 +37,21 @@ export function SingleList() {
     const taskName = task.task[0].taskName;
     const taskDescription = task.task[0].taskDescription;
     dispatch(addNewTask({ listName, taskName, taskDescription }));
+    setEditMode({
+      ...editMode,
+      [listName]: false,
+    });
     reset();
   };
+
+  const openTitleEdit = (list) => {
+    setEditMode({
+      ...editMode,
+      [list]: true,
+    });
+    console.log("editMode", editMode);
+  };
+
   const updateListName = ({ oldName, newName }) => {
     dispatch(renameList({ oldName, newName }));
   };
@@ -54,38 +62,49 @@ export function SingleList() {
     };
   };
 
+  const onEdit = ({ oldName, newName }) => {
+    dispatch(renameList({ oldName, newName }));
+  };
+
   return Object.keys(lists).map((list, listIndex) => (
-    <ListCard key={listIndex}>
-      <ListTitle>
-        <Editable text={list} type="input">
-          <input
-            type="text"
-            value={list}
-            onChange={(e) =>
-              updateListName({
-                oldName: list,
-                newName: e.target.value,
-              })
-            }
-          />
-        </Editable>
-        <button onClick={deleteList(list)}>Delete</button>
-      </ListTitle>
+    <Grid xs={12} item={true} itemkey={listIndex} key={list}>
+      <Paper elevation={2} style={styles.Paper}>
+        <div style={{ backgroundColor: "#99ff99" }}>
+          {editMode[list] ? (
+            <form onSubmit={(e) => onEdit({ oldName: list, newName: name })} style={{ display: "flex", width: "90%" }}>
+              <Input style={{ width: "90%" }} defaultValue={list} onChange={(e) => setName(e.target.value)} />
+              <IconButton type="submit" color="primary" aria-label="Add" style={styles.Icon}>
+                <Save fontSize="small" />
+              </IconButton>
+            </form>
+          ) : (
+            <div>
+              <span>{list}</span>
+              <IconButton color="primary" aria-label="Edit" style={styles.Icon} onClick={(e) => openTitleEdit(list)}>
+                <Build fontSize="small" />
+              </IconButton>
+              <IconButton color="secondary" aria-label="Delete" onClick={deleteList(list)}>
+                <Delete fontSize="small" />
+              </IconButton>
+            </div>
+          )}
+        </div>
+      </Paper>
       {lists[list].map((task, taskIndex) => (
         <Task taskIndex={taskIndex} task={task} list={list} key={`task${taskIndex}`} displayMoveBox={shouldDisplayMoveButton} />
       ))}
-      <form key={listIndex} onSubmit={handleSubmit((data) => onTaskSubmit({ task: data, listName: list }))}>
+      <form key={listIndex} onSubmit={handleSubmit((data) => onTaskSubmit({ task: data, listName: list }))} style={{ margin: "10px" }}>
         {fields.map((curField, fieldsIndex) => {
           return (
             <li key={curField.id}>
-              <input
+              <Input
                 key={`task.${fieldsIndex}.taskName`}
                 name={`task.${fieldsIndex}.taskName`}
                 {...register(`task.${fieldsIndex}.taskName`)}
                 placeholder="Enter task name"
                 required
               />
-              <input
+              <Input
                 key={`task.${fieldsIndex}.taskDescription`}
                 name={`task.${fieldsIndex}.taskDescription`}
                 {...register(`task.${fieldsIndex}.taskDescription`)}
@@ -94,8 +113,10 @@ export function SingleList() {
             </li>
           );
         })}
-        <input type="submit" />
+        <Button type="submit" variant="contained" color="primary" style={{ width: "10%", margin: "10px" }}>
+          Add
+        </Button>
       </form>
-    </ListCard>
+    </Grid>
   ));
 }

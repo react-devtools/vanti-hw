@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import Input from "@material-ui/core/Input";
+import Button from "@material-ui/core/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { addNewList } from "../../redux/reducer";
 
@@ -44,10 +46,10 @@ export default function Form() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="ListName">
         List name:
-        <input {...register("listName")} id="listName" />
+        <Input {...register("listName")} id="listName" />
         <p>{errors.listName?.message || existError}</p>
       </label>
-      <input type="submit" />
+      <Button type="submit">Add</Button>
     </form>
   );
 }

@@ -12,6 +12,7 @@ export const removeProp = (key, state) => {
 export const addTask = (key, state, task, taskDescription) => {
   let copy = Object.assign({}, state);
   let List = copy[key];
+  console.log("taskDescription", taskDescription);
   List = [...List, createTask(task, taskDescription)];
   copy[key] = List;
   return copy;
