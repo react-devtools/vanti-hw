@@ -3,7 +3,9 @@ import "./App.css";
 import { SingleList } from "./Lists/SingleList";
 import Form from "./Form/Form";
 
-import { Paper, Grid } from "@material-ui/core";
+import { Paper, Grid, CircularProgress } from "@material-ui/core";
+import { useSelector } from "react-redux";
+import { isLoadingSelector } from "../redux/selectors";
 
 const styles = {
   Paper: {
@@ -15,6 +17,7 @@ const styles = {
 };
 
 function App() {
+  const isLoading = useSelector(isLoadingSelector);
   return (
     <div className="App">
       <Fragment>
@@ -25,6 +28,7 @@ function App() {
             </Paper>
           </Grid>
           <Grid item xs={12} style={styles.Paper}>
+            {isLoading && <CircularProgress color="primary" />}
             <SingleList />
           </Grid>
         </Grid>

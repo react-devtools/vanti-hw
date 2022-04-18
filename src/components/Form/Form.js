@@ -5,7 +5,7 @@ import * as yup from "yup";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 import { useSelector, useDispatch } from "react-redux";
-import { addNewList } from "../../redux/reducer";
+import { addNewList, startLoader, listsSlice } from "../../redux/reducer";
 
 const schema = yup
   .object({
@@ -34,7 +34,9 @@ export default function Form() {
   const onSubmit = ({ listName }) => {
     const nameExist = Object.keys(lists).indexOf(listName) >= 0;
     if (!nameExist) {
+      dispatch(startLoader());
       dispatch(addNewList(listName));
+
       setExistError("");
       reset();
     } else {

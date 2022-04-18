@@ -17,11 +17,6 @@ export const addTask = (key, state, task, taskDescription) => {
   copy[key] = List;
   return copy;
 };
-export const deleteTask = (listName, state, taskIndex) => {
-  let copy = Object.assign({}, state);
-
-  return copy;
-};
 export const renameListObj = (state, oldName, newName) => {
   let copy = Object.assign({}, state);
   delete Object.assign(copy, { [newName]: copy[oldName] })[oldName];

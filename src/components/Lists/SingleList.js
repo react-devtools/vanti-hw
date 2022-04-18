@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Input, Button, Grid, Paper } from "@material-ui/core";
 
-import { addNewTask, removeList, renameList } from "../../redux/reducer";
+import { addNewTask, startLoader, loadDone, removeList, renameList } from "../../redux/reducer";
 import { useForm, useFieldArray } from "react-hook-form";
 import { Task } from "./Task/Task";
 import { listsSelector } from "../../redux/selectors";
@@ -36,6 +36,7 @@ export function SingleList() {
   const onTaskSubmit = ({ task, listName }) => {
     const taskName = task.task[0].taskName;
     const taskDescription = task.task[0].taskDescription;
+    dispatch(startLoader());
     dispatch(addNewTask({ listName, taskName, taskDescription }));
     setEditMode({
       ...editMode,
@@ -52,17 +53,15 @@ export function SingleList() {
     console.log("editMode", editMode);
   };
 
-  const updateListName = ({ oldName, newName }) => {
-    dispatch(renameList({ oldName, newName }));
-  };
-
   const deleteList = (listName) => {
     return () => {
+      dispatch(startLoader());
       dispatch(removeList(listName));
     };
   };
 
   const onEdit = ({ oldName, newName }) => {
+    dispatch(startLoader());
     dispatch(renameList({ oldName, newName }));
   };
 

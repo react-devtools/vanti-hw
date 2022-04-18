@@ -5,7 +5,7 @@ import Select from "react-select";
 import { Delete, Build, Save } from "@material-ui/icons";
 import { Grid, Input, Paper } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
-import { removeTask, renameTaskDescription, renameTaskName, moveTaskTo } from "../../../redux/reducer";
+import { removeTask, renameTaskDescription, renameTaskName, moveTaskTo, startLoader } from "../../../redux/reducer";
 import { styles } from "../../resources/styles";
 
 export const Task = ({ task, taskIndex, list, displayMoveBox }) => {
@@ -22,12 +22,14 @@ export const Task = ({ task, taskIndex, list, displayMoveBox }) => {
 
   useEffect(() => {
     if (selectedOption) {
+      dispatch(startLoader());
       dispatch(moveTaskTo({ oldList: list, newList: selectedOption.value, taskIndex }));
     }
   }, [selectedOption]);
 
   const deleteTask = (listName, taskIndex) => {
     return () => {
+      dispatch(startLoader());
       dispatch(removeTask({ listName, taskIndex }));
       setFade(true);
     };
@@ -38,9 +40,11 @@ export const Task = ({ task, taskIndex, list, displayMoveBox }) => {
   const onEdit = (event) => {
     event.preventDefault();
     if (name) {
+      dispatch(startLoader());
       dispatch(renameTaskName({ listName: list, taskIndex, newName: name }));
     }
     if (description) {
+      dispatch(startLoader());
       dispatch(renameTaskDescription({ listName: list, taskIndex, newDescription: description }));
     }
     setEditMode(false);
