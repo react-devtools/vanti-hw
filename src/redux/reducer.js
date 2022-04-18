@@ -1,5 +1,6 @@
 import { createSlice, current } from "@reduxjs/toolkit";
-import { addTask, createTask, removeProp, renameListObj } from "./utils";
+import { addTask, createTask, moveTask, removeProp, renameListObj } from "./utils";
+import { useSelector } from "react-redux";
 
 export const listsSlice = createSlice({
   name: "lists",
@@ -82,9 +83,18 @@ export const listsSlice = createSlice({
         },
       };
     },
+    moveTaskTo: (state, { payload }) => {
+      const taskIndex = payload.taskIndex;
+      const oldList = payload.oldList;
+      const newList = payload.newList;
+      return {
+        ...state,
+        value: moveTask(current(state).value, oldList, newList, taskIndex),
+      };
+    },
   },
 });
 
-export const { addNewList, renameList, addNewTask, renameTaskName, renameTaskDescription, removeList, removeTask } = listsSlice.actions;
+export const { addNewList, renameList, addNewTask, renameTaskName, renameTaskDescription, removeList, removeTask, moveTaskTo } = listsSlice.actions;
 
 export default listsSlice.reducer;

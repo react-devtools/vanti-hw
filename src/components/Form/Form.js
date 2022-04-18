@@ -19,6 +19,7 @@ export default function Form() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -33,6 +34,7 @@ export default function Form() {
     if (!nameExist) {
       dispatch(addNewList(listName));
       setExistError("");
+      reset();
     } else {
       setExistError("The list already exists, please pick another name");
     }

@@ -26,3 +26,18 @@ export const renameListObj = (state, oldName, newName) => {
   delete Object.assign(copy, { [newName]: copy[oldName] })[oldName];
   return copy;
 };
+
+export const moveTask = (state, oldList, newList, taskIndex) => {
+  let copy = Object.assign({}, state);
+  const oldArray = [...copy[oldList]];
+  const newArray = [...copy[newList]];
+  const task = oldArray[taskIndex];
+  oldArray.splice(taskIndex, 1);
+  newArray.push(task);
+  copy = {
+    ...copy,
+    [oldList]: oldArray,
+    [newList]: newArray,
+  };
+  return copy;
+};

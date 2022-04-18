@@ -4,7 +4,9 @@ import styled from "styled-components";
 
 import { addNewTask, removeList, renameList, renameTaskDescription, renameTaskName, removeTask } from "../../redux/reducer";
 import { useForm, useFieldArray } from "react-hook-form";
-import Editable from "./Editable";
+import Editable from "./common/Editable";
+import { Task } from "./Task/Task";
+import { listsSelector } from "../../redux/selectors";
 
 const ListCard = styled.div`
   font-size: 1.5em;
@@ -14,13 +16,11 @@ const ListCard = styled.div`
 const ListTitle = styled.h1`
   font-size: 2em;
 `;
-const TaskTitle = styled.h2`
-  font-size: 1.5em;
-`;
 
 export function SingleList() {
-  const lists = useSelector((state) => state.value);
   const dispatch = useDispatch();
+  const lists = useSelector((state) => state.value);
+  const shouldDisplayMoveButton = useSelector(listsSelector);
 
   const {
     register,
@@ -47,21 +47,10 @@ export function SingleList() {
   const updateListName = ({ oldName, newName }) => {
     dispatch(renameList({ oldName, newName }));
   };
-  const updateTaskName = ({ listName, taskIndex, newName }) => {
-    dispatch(renameTaskName({ listName, taskIndex, newName }));
-  };
-  const updateTaskDescription = ({ listName, taskIndex, newDescription }) => {
-    dispatch(renameTaskDescription({ listName, taskIndex, newDescription }));
-  };
 
   const deleteList = (listName) => {
     return () => {
       dispatch(removeList(listName));
-    };
-  };
-  const deleteTask = (listName, taskIndex) => {
-    return () => {
-      dispatch(removeTask({ listName, taskIndex }));
     };
   };
 
@@ -83,35 +72,7 @@ export function SingleList() {
         <button onClick={deleteList(list)}>Delete</button>
       </ListTitle>
       {lists[list].map((task, taskIndex) => (
-        <TaskTitle key={taskIndex}>
-          <Editable text={task.name} type="input">
-            <input
-              type="text"
-              value={task.name}
-              onChange={(e) =>
-                updateTaskName({
-                  listName: list,
-                  taskIndex: taskIndex,
-                  newName: e.target.value,
-                })
-              }
-            />
-          </Editable>
-          <Editable text={task.description} type="input">
-            <input
-              type="text"
-              value={task.description}
-              onChange={(e) =>
-                updateTaskDescription({
-                  listName: list,
-                  taskIndex: taskIndex,
-                  newDescription: e.target.value,
-                })
-              }
-            />
-          </Editable>
-          <button onClick={deleteTask(list, taskIndex)}>Delete</button>
-        </TaskTitle>
+        <Task taskIndex={taskIndex} task={task} list={list} key={`task${taskIndex}`} displayMoveBox={shouldDisplayMoveButton} />
       ))}
       <form key={listIndex} onSubmit={handleSubmit((data) => onTaskSubmit({ task: data, listName: list }))}>
         {fields.map((curField, fieldsIndex) => {
